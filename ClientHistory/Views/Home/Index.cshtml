@@ -1,0 +1,48 @@
+﻿@model List<ClientHistory.Models.Message>
+
+@{
+    ViewData["Title"] = "Message History";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<form asp-action="GetMessages" method="post">
+    <div>
+        <label for="StartDate">Start date:</label>
+        <input type="datetime-local" name="startDate" id="StartDate" />
+    </div>
+    <div>
+        <label for="EndDate">End date:</label>
+        <input type="datetime-local" name="endDate" id="EndDate" />
+    </div>
+    <div>
+        <button type="submit">Get</button>
+    </div>
+</form>
+
+@if (Model != null && Model.Any())
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Text</th>
+                <th>Timestamp</th>
+                <th>SequenceNumber</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var message in Model)
+            {
+                <tr>
+                    <td>@message.Text</td>
+                    <td>@message.Timestamp.ToLocalTime()</td>
+                    <td>@message.SequenceNumber</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>No message for the date range.</p>
+}

@@ -1,0 +1,24 @@
+﻿@model ClientSender.Models.Message
+
+@{
+    ViewData["Title"] = "Message Sender";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<form asp-action="SendMessage" method="post">
+    <div>
+        <label for="Text">Message:</label>
+        <input type="text" name="text" id="Text" maxlength="128" required />
+    </div>
+    <div>
+        <label for="SequenceNumber">Sequence Number:</label>
+        <input type="number" name="sequenceNumber" id="SequenceNumber" required />
+    </div>
+    <button type="submit">Send</button>
+</form>
+
+@if (ViewBag.Message != null)
+{
+    <p>@ViewBag.Message</p>
+}

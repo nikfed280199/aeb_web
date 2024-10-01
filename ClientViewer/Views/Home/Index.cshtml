@@ -1,0 +1,86 @@
+﻿@{
+    ViewData["Title"] = "Message Viewer";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<!-- <div id="messages">
+    <ul id="messageList">
+    </ul>
+</div>
+
+<script>
+    async function loadMessages() {
+        try {
+            const response = await fetch('/Home/GetMessages');
+            const messages = await response.json();
+
+            const messageList = document.getElementById('messageList');
+            messageList.innerHTML = '';
+
+            messages.forEach(msg => {
+                const listItem = document.createElement('li');
+                listItem.textContent = `Message: ${msg.text}, Sequence: ${msg.sequenceNumber}, Timestamp: ${msg.timestamp}`;
+                messageList.appendChild(listItem);
+            });
+        } catch (error) {
+            console.error("Failed to load messages:", error);
+        }
+    }
+
+    loadMessages();
+
+    const webSocketUri = "ws://localhost:5000/ws/messages";
+    const webSocket = new WebSocket(webSocketUri);
+
+    webSocket.onmessage = (event) => {
+        const message = JSON.parse(event.data);
+        const messageList = document.getElementById('messageList');
+
+        const listItem = document.createElement('li');
+        listItem.textContent = `Message: ${message.text}, Sequence: ${message.sequenceNumber}, Timestamp: ${message.timestamp}`;
+        messageList.appendChild(listItem);
+    };
+
+    webSocket.onerror = (error) => {
+        console.error("WebSocket error:", error);
+    };
+</script> -->
+
+<table id="messageTable" border="1">
+    <thead>
+        <tr>
+            <th>Text</th>
+            <th>Timestamp</th>
+            <th>SequenceNumber</th>
+        </tr>
+    </thead>
+    <tbody id="messageList">
+    </tbody>
+</table>
+
+<script>
+    async function loadMessages() {
+        try {
+            const response = await fetch('/api/messages');
+            const messages = await response.json();
+
+            const messageList = document.getElementById('messageList');
+            messageList.innerHTML = '';
+
+            messages.forEach(msg => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${msg.text}</td>
+                    <td>${new Date(msg.timestamp).toLocaleString()}</td>
+                    <td>${msg.sequenceNumber}</td>
+                `;
+                messageList.appendChild(row);
+            });
+        } catch (error) {
+            console.error("Failed to load messages:", error);
+        }
+    }
+
+    window.onload = loadMessages;
+</script>
